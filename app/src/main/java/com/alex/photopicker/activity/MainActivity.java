@@ -171,17 +171,19 @@ public class MainActivity extends AppCompatActivity implements PhotoEditAdapter.
 		super.onActivityResult(requestCode, resultCode, data);
 		Log.e(TAG, "onActivityResult: requestCode = " + requestCode + ",resultCode = " + resultCode );
 		if (requestCode == REQUEST_CAMERA){
-			//添加拍照获取的图片
-			mUrlList.add(mFile.getAbsolutePath());
-			mPhotoEditAdapter.setList(mUrlList);
-			mPhotoList.add(new MediaPhoto(mFile.getAbsolutePath(),true));
-			mSurplusCount = mMaxImageCount - mUrlList.size();
-			//发送一个广播,刷新相册
-			Intent intent = new Intent();
-			intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-			intent.setData(Uri.fromFile(mFile));
-			sendBroadcast(intent);
-			return;
+			if (mFile.exists()&&mFile.length()>0){
+				//添加拍照获取的图片
+				mUrlList.add(mFile.getAbsolutePath());
+				mPhotoEditAdapter.setList(mUrlList);
+				mPhotoList.add(new MediaPhoto(mFile.getAbsolutePath(),true));
+				mSurplusCount = mMaxImageCount - mUrlList.size();
+				//发送一个广播,刷新相册
+				Intent intent = new Intent();
+				intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+				intent.setData(Uri.fromFile(mFile));
+				sendBroadcast(intent);
+				return;
+			}
 		}
 
 		switch (resultCode) {
