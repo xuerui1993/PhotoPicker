@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+
+	<RelativeLayout
+		android:id="@+id/top_bar"
+		android:layout_width="match_parent"
+		android:layout_height="38dp"
+		android:background="@color/black">
+
+		<RelativeLayout
+			android:id="@+id/rl_back"
+			android:layout_centerVertical="true"
+			android:layout_width="40dp"
+			android:layout_height="38dp">
+			<ImageView
+				android:layout_centerVertical="true"
+				android:layout_width="28dp"
+				android:layout_height="18dp"
+				android:layout_marginLeft="5dp"
+				android:src="@mipmap/nav_back"/>
+		</RelativeLayout>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:text="相机照片"
+			android:textColor="@color/white"
+			android:textSize="16sp"/>
+
+		<TextView
+			android:id="@+id/tv_cancel"
+			android:layout_width="60dp"
+			android:layout_height="30dp"
+			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"
+			android:gravity="center"
+			android:text="取消"
+			android:textColor="@color/white"
+			android:textSize="14sp"/>
+	</RelativeLayout>
+
+	<android.support.v7.widget.RecyclerView
+		android:id="@+id/recyclerView"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1">
+	</android.support.v7.widget.RecyclerView>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="42dp"
+		android:layout_alignParentBottom="true"
+		android:background="@color/black"
+		android:clickable="true"
+		android:focusable="true">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="0.3dp"
+			android:background="#33000000">
+		</LinearLayout>
+
+		<TextView
+		android:id="@+id/tv_preview"
+		android:layout_marginLeft="20dp"
+		android:layout_centerVertical="true"
+		android:gravity="center"
+		android:textColor="@color/white"
+		android:textSize="14sp"
+		android:text="预览"
+		android:layout_width="50dp"
+		android:layout_height="40dp"/>
+		<TextView
+			android:background="@drawable/shape_blue_soild"
+			android:id="@+id/tv_complete"
+			android:layout_width="60dp"
+			android:layout_height="26dp"
+			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"
+			android:layout_marginRight="20dp"
+			android:gravity="center"
+			android:text="完成"
+			android:textColor="@color/white"
+			android:textSize="12sp"/>
+	</RelativeLayout>
+</LinearLayout>

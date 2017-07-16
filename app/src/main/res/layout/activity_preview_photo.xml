@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<android.support.v4.view.ViewPager
+		android:id="@+id/top_view_pager"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+	</android.support.v4.view.ViewPager>
+
+	<RelativeLayout
+		android:id="@+id/rl_top_bar"
+		android:layout_width="match_parent"
+		android:layout_height="50dp"
+		android:background="@color/dark_gray">
+
+		<RelativeLayout
+			android:id="@+id/rl_back"
+			android:layout_width="50dp"
+			android:layout_height="50dp"
+			android:layout_centerVertical="true">
+
+			<ImageView
+				android:layout_width="25dp"
+				android:layout_height="18dp"
+				android:layout_centerVertical="true"
+				android:layout_marginLeft="5dp"
+				android:src="@mipmap/nav_back"/>
+		</RelativeLayout>
+		<TextView
+			android:id="@+id/tv_title"
+			android:textSize="14sp"
+			android:textColor="@color/white"
+			android:layout_centerInParent="true"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"/>
+		<RelativeLayout
+			android:id="@+id/rl_check"
+			android:layout_width="50dp"
+			android:layout_height="50dp"
+			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true">
+
+			<ImageView
+				android:id="@+id/iv_check"
+				android:layout_width="21dp"
+				android:layout_height="21dp"
+				android:layout_centerInParent="true"
+				android:src="@drawable/imagepicker_checkbox_selector"/>
+		</RelativeLayout>
+	</RelativeLayout>
+
+	<RelativeLayout
+		android:id="@+id/rl_bottom_bar"
+		android:layout_width="match_parent"
+		android:layout_height="42dp"
+		android:layout_alignParentBottom="true"
+		android:background="@color/dark_gray"
+		android:clickable="true"
+		android:focusable="true">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="0.3dp"
+			android:background="@color/pale_gray">
+		</LinearLayout>
+
+		<TextView
+			android:background="@drawable/shape_blue_soild"
+			android:id="@+id/tv_complete"
+			android:layout_width="57dp"
+			android:layout_height="27dp"
+			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"
+			android:layout_marginRight="20dp"
+			android:gravity="center"
+			android:text="完成"
+			android:textColor="@color/white"
+			android:textSize="13sp"/>
+
+	</RelativeLayout>
+</RelativeLayout>
