@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alex.photopicker.Constants.Constant;
+import com.alex.photopicker.constants.Constant;
 import com.alex.photopicker.R;
 import com.alex.photopicker.bens.MediaPhoto;
 import com.bumptech.glide.Glide;

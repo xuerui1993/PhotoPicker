@@ -20,7 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alex.photopicker.Constants.Constant;
+import com.alex.photopicker.constants.Constant;
 import com.alex.photopicker.R;
 import com.alex.photopicker.adapter.ImagePickerAdapter;
 import com.alex.photopicker.bens.MediaPhoto;
@@ -218,6 +218,7 @@ public class ImagePickerActivity extends AppCompatActivity implements View.OnCli
 		previewIntent.putExtra(Constant.PHOTO_PREVIEW_LIST,list);
 		previewIntent.putExtra(Constant.TITLE_IS_GONE, titleIsGone);
 		previewIntent.putExtra(Constant.PHOTO_POSITION,position);
+		previewIntent.putExtra(Constant.MAX_COUNT,mMaxCount);
 		startActivityForResult(previewIntent,Constant.PREVIEW_PHOTO);
 	}
 }

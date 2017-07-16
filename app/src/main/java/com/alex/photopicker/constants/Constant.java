@@ -1,4 +1,4 @@
-package com.alex.photopicker.Constants;
+package com.alex.photopicker.constants;
 
 /*
  *  @项目名：  PhotoPicker 

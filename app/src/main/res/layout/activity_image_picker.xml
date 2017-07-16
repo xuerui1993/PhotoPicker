@@ -76,16 +76,16 @@
 		android:layout_width="50dp"
 		android:layout_height="40dp"/>
 		<TextView
-			android:background="@drawable/shape_blue_soild"
+			android:background="@drawable/shape_blue_solid"
 			android:id="@+id/tv_complete"
 			android:layout_width="60dp"
-			android:layout_height="26dp"
+			android:layout_height="27dp"
 			android:layout_alignParentRight="true"
 			android:layout_centerVertical="true"
 			android:layout_marginRight="20dp"
 			android:gravity="center"
 			android:text="完成"
 			android:textColor="@color/white"
-			android:textSize="12sp"/>
+			android:textSize="13sp"/>
 	</RelativeLayout>
 </LinearLayout>

@@ -68,7 +68,7 @@
 		</LinearLayout>
 
 		<TextView
-			android:background="@drawable/shape_blue_soild"
+			android:background="@drawable/shape_blue_solid"
 			android:id="@+id/tv_complete"
 			android:layout_width="57dp"
 			android:layout_height="27dp"
