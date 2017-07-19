@@ -1,6 +1,6 @@
 # PhotoPicker
 <br>照片选择器,相机拍照选取图片
-<br>1.在项目build.gradle目录下添加
+1.在项目build.gradle目录下添加
 <br>
 allprojects {
     <br>repositories {
