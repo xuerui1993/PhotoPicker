@@ -1,5 +1,8 @@
 # PhotoPicker
 照片选择器,相机拍照选取图片
+![](https://github.com/xuerui1993/PhotoPicker/blob/master/504568939774866246.jpg)
+![](https://github.com/xuerui1993/PhotoPicker/blob/master/603781355456128155.jpg)
+![](https://github.com/xuerui1993/PhotoPicker/blob/master/645511239786389592.jpg)
 <br>1.在项目build.gradle目录下添加
 <br>
 allprojects {
