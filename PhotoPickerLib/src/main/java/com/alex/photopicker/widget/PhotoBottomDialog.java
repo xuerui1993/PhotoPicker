@@ -91,23 +91,20 @@ public class PhotoBottomDialog extends AlertDialog.Builder implements View.OnCli
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-			case R.id.btn_cancel:
-				mAlertDialog.dismiss();
-				break;
-			case R.id.btn_take_picture:
-				mAlertDialog.dismiss();
-				if (checkHasCameraPermission()) {
-					mActivity.startActivityForResult(mIntent, REQUEST_CAMERA);
-				} else {
-					//申请相机权限
-					ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
-				}
-				break;
-			case R.id.btn_gallery:
-				mAlertDialog.dismiss();
-				addPhoto();
-				break;
+		int id = v.getId();
+		if (id == R.id.btn_cancel){
+			mAlertDialog.dismiss();
+		}else if (id == R.id.btn_take_picture){
+			mAlertDialog.dismiss();
+			if (checkHasCameraPermission()) {
+				mActivity.startActivityForResult(mIntent, REQUEST_CAMERA);
+			} else {
+				//申请相机权限
+				ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
+			}
+		}else if (id == R.id.btn_gallery){
+			mAlertDialog.dismiss();
+			addPhoto();
 		}
 	}
 

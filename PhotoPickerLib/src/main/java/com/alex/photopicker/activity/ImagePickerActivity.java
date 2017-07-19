@@ -142,39 +142,35 @@ public class ImagePickerActivity extends AppCompatActivity implements View.OnCli
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-			case R.id.tv_complete:
-				if (mAdapter.mSelectList==null||mAdapter.mSelectList.size()==0){
-					toast("至少选择一张图片");
-					return;
-				}
-				ArrayList<MediaPhoto> checkList = getCheckPhotos();
-				Intent intent = new Intent();
-				intent.putExtra(Constant.PHOTO_LIST, checkList);
-				setResult(Constant.ADD_PHOTO, intent);
-				finish();
-				overridePendingTransition(R.anim.push_right_in, R.anim.push_left_out);
-				break;
-			case R.id.rl_back:
-				finish();
-				overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out);
-				break;
-			case R.id.tv_cancel:
-				finish();
-				overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out);
-				break;
-			case R.id.tv_preview:
-				if (mAdapter.mSelectList==null||mAdapter.mSelectList.size()==0){
-					toast("至少选择一张图片");
-					return;
-				}
-				ArrayList<MediaPhoto> checkList2 = getCheckPhotos();
-				Intent previewIntent = new Intent(this, PhotoPreviewActivity.class);
-				previewIntent.putExtra(Constant.PHOTO_PREVIEW_LIST, checkList2);
-				previewIntent.putExtra(Constant.TITLE_IS_GONE,false);
-				previewIntent.putExtra(Constant.MAX_COUNT,mMaxCount);
-				startActivityForResult(previewIntent, Constant.PREVIEW_PHOTO);
-				break;
+		int id = v.getId();
+		if (id == R.id.tv_complete){
+			if (mAdapter.mSelectList==null||mAdapter.mSelectList.size()==0){
+				toast("至少选择一张图片");
+				return;
+			}
+			ArrayList<MediaPhoto> checkList = getCheckPhotos();
+			Intent intent = new Intent();
+			intent.putExtra(Constant.PHOTO_LIST, checkList);
+			setResult(Constant.ADD_PHOTO, intent);
+			finish();
+			overridePendingTransition(R.anim.push_right_in, R.anim.push_left_out);
+		}else if (id == R.id.rl_back){
+			finish();
+			overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out);
+		}else if (id == R.id.tv_cancel){
+			finish();
+			overridePendingTransition(R.anim.push_left_in, R.anim.push_right_out);
+		}else if (id == R.id.tv_preview){
+			if (mAdapter.mSelectList==null||mAdapter.mSelectList.size()==0){
+				toast("至少选择一张图片");
+				return;
+			}
+			ArrayList<MediaPhoto> checkList2 = getCheckPhotos();
+			Intent previewIntent = new Intent(this, PhotoPreviewActivity.class);
+			previewIntent.putExtra(Constant.PHOTO_PREVIEW_LIST, checkList2);
+			previewIntent.putExtra(Constant.TITLE_IS_GONE,false);
+			previewIntent.putExtra(Constant.MAX_COUNT,mMaxCount);
+			startActivityForResult(previewIntent, Constant.PREVIEW_PHOTO);
 		}
 	}
 

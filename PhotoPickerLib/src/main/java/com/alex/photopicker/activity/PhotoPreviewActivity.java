@@ -105,39 +105,36 @@ public class PhotoPreviewActivity extends AppCompatActivity implements View.OnCl
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-			case R.id.rl_back:
-				finish();
-				break;
-			case R.id.rl_check:
-				boolean isCheck = mPreviewList.get(mPosition).isCheck();
-				if (isCheck) {
-					mPreviewList.get(mPosition).setCheck(false);
-					mIvCheck.setSelected(false);
-					mCheckNumber--;
-				} else {
-					if (mCheckNumber >= mMaxCount && !isCheck) {
-						toast("最多只能选择"+mMaxCount+"张图片");
-						return;
-					}
-					mPreviewList.get(mPosition).setCheck(true);
-					mIvCheck.setSelected(true);
-					mCheckNumber++;
+		int id = v.getId();
+		if (id == R.id.rl_back){
+			finish();
+		}else if (id == R.id.rl_check){
+			boolean isCheck = mPreviewList.get(mPosition).isCheck();
+			if (isCheck) {
+				mPreviewList.get(mPosition).setCheck(false);
+				mIvCheck.setSelected(false);
+				mCheckNumber--;
+			} else {
+				if (mCheckNumber >= mMaxCount && !isCheck) {
+					toast("最多只能选择"+mMaxCount+"张图片");
+					return;
 				}
-				setTvCheckNumber();
-				break;
-			case R.id.tv_complete:
-				ArrayList<MediaPhoto> checkList = new ArrayList();
-				for (int i = 0; i < mPreviewList.size(); i++) {
-					if (mPreviewList.get(i).isCheck()) {
-						checkList.add(mPreviewList.get(i));
-					}
+				mPreviewList.get(mPosition).setCheck(true);
+				mIvCheck.setSelected(true);
+				mCheckNumber++;
+			}
+			setTvCheckNumber();
+		}else if (id == R.id.tv_complete){
+			ArrayList<MediaPhoto> checkList = new ArrayList();
+			for (int i = 0; i < mPreviewList.size(); i++) {
+				if (mPreviewList.get(i).isCheck()) {
+					checkList.add(mPreviewList.get(i));
 				}
-				Intent intent = new Intent();
-				intent.putExtra(Constant.PHOTO_CHECK_LIST, checkList);
-				setResult(Constant.PREVIEW_PHOTO, intent);
-				finish();
-				break;
+			}
+			Intent intent = new Intent();
+			intent.putExtra(Constant.PHOTO_CHECK_LIST, checkList);
+			setResult(Constant.PREVIEW_PHOTO, intent);
+			finish();
 		}
 	}
 
