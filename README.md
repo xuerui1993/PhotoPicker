@@ -38,3 +38,6 @@ allprojects {
 <br>super.onActivityResult(requestCode, resultCode, data);
 <br>mPhotoEditView.onActivityResult(requestCode,resultCode,data);
 <br>}
+<br><br>
+6.获取照片路径
+<br>List<String> urlList = mPhotoEditView.getPhotoList();
