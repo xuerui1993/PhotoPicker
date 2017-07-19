@@ -6,8 +6,8 @@ allprojects {
     <br>repositories {
 	<br>jcenter()
        <br> maven { url 'https://jitpack.io' }
-    }
-}
+    <br>}
+<br>}
 <br><br>
 2.在app的build.gradle目录下添加
 <br>dependencies {
