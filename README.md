@@ -7,10 +7,12 @@
 - 1.在项目build.gradle目录下添加
 	
 		allprojects {
-			repositories {
+		    repositories {
 			jcenter()
-	        maven { url 'https://jitpack.io' }
+			maven {
+			    url 'https://jitpack.io'
 			}
+		    }
 		}
 
 - 2.在app的build.gradle目录下添加
