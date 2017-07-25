@@ -48,6 +48,4 @@
 - 6.获取照片路径
 		
 		List<String> urlList = mPhotoEditView.getPhotoList();
-<br><br>
-6.获取照片路径
-<br>List<String> urlList = mPhotoEditView.getPhotoList();
+
