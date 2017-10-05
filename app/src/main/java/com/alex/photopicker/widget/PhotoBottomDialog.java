@@ -9,12 +9,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+
 import com.alex.photopicker.R;
 import com.alex.photopicker.activity.ImagePickerActivity;
 import com.alex.photopicker.constants.Constant;
@@ -30,6 +32,7 @@ import com.alex.photopicker.constants.Constant;
 public class PhotoBottomDialog extends AlertDialog.Builder implements View.OnClickListener {
 	private static final int REQUEST_CODE_CAMERA = 100;
 	private static final int REQUEST_CAMERA = 101;
+	private static final String TAG = "PhotoBottomDialog";
 	private int mSurplusCount;
 	private Intent mIntent;
 	private Activity mActivity;
@@ -39,7 +42,7 @@ public class PhotoBottomDialog extends AlertDialog.Builder implements View.OnCli
 	private Button mBtnCancel;
 	private AlertDialog mAlertDialog;
 
-	public PhotoBottomDialog(@NonNull Context context, Activity activity, Intent intent,int surplusCount) {
+	public PhotoBottomDialog(@NonNull Context context, Activity activity, Intent intent, int surplusCount) {
 		this(context, R.style.ActionSheetDialogStyle);
 		mActivity = activity;
 		mIntent = intent;
@@ -86,7 +89,9 @@ public class PhotoBottomDialog extends AlertDialog.Builder implements View.OnCli
 	 */
 	private boolean checkHasCameraPermission() {
 		int result = ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA);
-		return result == PackageManager.PERMISSION_GRANTED;
+		int storage_result = ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE);
+		Log.e(TAG, "checkHasCameraPermission: result = " + result +",storage_result = " +storage_result);
+		return result == PackageManager.PERMISSION_GRANTED && storage_result == PackageManager.PERMISSION_GRANTED;
 	}
 
 	@Override
@@ -97,11 +102,11 @@ public class PhotoBottomDialog extends AlertDialog.Builder implements View.OnCli
 				break;
 			case R.id.btn_take_picture:
 				mAlertDialog.dismiss();
-				if (checkHasCameraPermission()) {
+				if (checkHasCameraPermission() && checkHasReadExternalStorage()) {
 					mActivity.startActivityForResult(mIntent, REQUEST_CAMERA);
 				} else {
 					//申请相机权限
-					ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA);
+					ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_CAMERA);
 				}
 				break;
 			case R.id.btn_gallery:
@@ -115,6 +120,11 @@ public class PhotoBottomDialog extends AlertDialog.Builder implements View.OnCli
 		Intent intent = new Intent(mContext, ImagePickerActivity.class);
 		intent.putExtra(Constant.MAX_COUNT, mSurplusCount);
 		mActivity.startActivityForResult(intent, Constant.ADD_PHOTO);
+	}
+
+	private boolean checkHasReadExternalStorage() {
+		int result = ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE);
+		return result == PackageManager.PERMISSION_GRANTED;
 	}
 
 }

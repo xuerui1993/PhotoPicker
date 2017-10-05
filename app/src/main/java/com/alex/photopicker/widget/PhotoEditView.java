@@ -7,12 +7,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
 import com.alex.photopicker.R;
 import com.alex.photopicker.adapter.PhotoEditAdapter;
 import com.alex.photopicker.constants.Constant;
+
 import java.util.List;
 
 /*
@@ -27,6 +30,7 @@ import java.util.List;
 public class PhotoEditView extends LinearLayout {
 	private static final int REQUEST_CAMERA = 101;
 	private static final int REQUEST_CODE_CAMERA = 100;
+	private static final String TAG = "PhotoEditView";
 	private Context mContext;
 	private PhotoEditAdapter mPhotoEditAdapter;
 	private RecyclerView mRecyclerView;
@@ -37,7 +41,7 @@ public class PhotoEditView extends LinearLayout {
 
 	public PhotoEditView(Context context, @Nullable AttributeSet attrs) {
 		super(context, attrs);
-		mContext  = context;
+		mContext = context;
 		View view = View.inflate(context, R.layout.view_photo_edit, this);
 		initView(view);
 	}
@@ -47,11 +51,11 @@ public class PhotoEditView extends LinearLayout {
 
 	}
 
-	public List<String> getPhotoList(){
+	public List<String> getPhotoList() {
 		return mPhotoEditAdapter.mUrlList;
 	}
 
-	public void setMaxCount(int maxCount , int cloumNumber) {
+	public void setMaxCount(int maxCount, int cloumNumber) {
 		mPhotoEditAdapter = new PhotoEditAdapter(mContext, maxCount);
 		mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, cloumNumber));
 		mRecyclerView.setHasFixedSize(true);
@@ -59,7 +63,9 @@ public class PhotoEditView extends LinearLayout {
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.e("view", "onActivityResult: requestCode = " + requestCode);
 		if (requestCode == REQUEST_CAMERA) {
+			Log.e("view", "onActivityResult: requestCode =101 ");
 			mPhotoEditAdapter.setTakePhotoData();
 			return;
 		}
@@ -76,11 +82,21 @@ public class PhotoEditView extends LinearLayout {
 	public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) {
 		switch (requestCode) {
 			case REQUEST_CODE_CAMERA:
-				if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-					mPhotoEditAdapter.takePhoto();
-				} else {
-					toast("权限被拒绝");
+				Log.e(TAG, "onRequestPermissionResult: " );
+				if (permissions.length == 1) {
+					if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+						mPhotoEditAdapter.takePhoto();
+					} else {
+						toast("权限被拒绝,无法使用相机拍照");
+					}
+				} else if (permissions.length == 2) {
+					if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+						mPhotoEditAdapter.takePhoto();
+					} else {
+						toast("权限被拒绝,无法使用相机拍照");
+					}
 				}
+
 				break;
 		}
 	}

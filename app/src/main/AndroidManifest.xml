@@ -21,6 +21,15 @@
 			android:theme="@style/TopBlackTheme"></activity>
 		<activity android:name=".activity.PhotoPreviewActivity"
 			android:theme="@style/AppTheme.FullScreen"></activity>
+		<provider
+			android:name="android.support.v4.content.FileProvider"
+			android:authorities="com.alex.photopicker.fileprovider"
+			android:exported="false"
+			android:grantUriPermissions="true">
+			<meta-data
+				android:name="android.support.FILE_PROVIDER_PATHS"
+				android:resource="@xml/provider_paths"></meta-data>
+		</provider>
 	</application>
 
 </manifest>

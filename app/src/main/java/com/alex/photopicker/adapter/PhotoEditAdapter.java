@@ -3,23 +3,30 @@ package com.alex.photopicker.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.alex.photopicker.R;
 import com.alex.photopicker.activity.PhotoPreviewActivity;
 import com.alex.photopicker.bens.MediaPhoto;
 import com.alex.photopicker.constants.Constant;
+import com.alex.photopicker.utils.ProviderUtil;
 import com.alex.photopicker.widget.PhotoBottomDialog;
 import com.bumptech.glide.Glide;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +57,7 @@ public class PhotoEditAdapter extends RecyclerView.Adapter {
 		notifyDataSetChanged();
 	}
 
-	public PhotoEditAdapter(Context context,int maxImgCount) {
+	public PhotoEditAdapter(Context context, int maxImgCount) {
 		mMaxImageCount = maxImgCount;
 		mSurplusCount = maxImgCount;
 		mContext = context;
@@ -93,27 +100,61 @@ public class PhotoEditAdapter extends RecyclerView.Adapter {
 	}
 
 	public void setTakePhotoData() {
-		if (mFile.exists() && mFile.length() > 0) {
-			//添加拍照获取的图片
-			mUrlList.add(mFile.getAbsolutePath());
-			setList(mUrlList);
-			mPhotoList.add(new MediaPhoto(mFile.getAbsolutePath(), true));
-			mSurplusCount = mMaxImageCount - mUrlList.size();
-			//发送一个广播,刷新相册
-			Intent intent = new Intent();
-			intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-			intent.setData(Uri.fromFile(mFile));
-			mActivity.sendBroadcast(intent);
-			return;
+		//发送一个广播,刷新相册
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+		intent.setData(Uri.fromFile(mFile));
+		mActivity.sendBroadcast(intent);
+		Log.e(TAG, "setTakePhotoData: 11111 ");
+		Uri uri;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			if (mFile.exists() && mFile.getAbsolutePath().length() > 0) {
+				mUrlList.add(mFile.getAbsolutePath());
+				setList(mUrlList);
+				mPhotoList.add(new MediaPhoto(mFile.getAbsolutePath(), true));
+				Log.e(TAG, "setTakePhotoData:,mFile.length() = " +mFile.getAbsolutePath().length());
+			}
+
+		} else {
+			uri = Uri.fromFile(mFile);
+			if (mFile.exists() && mFile.getAbsolutePath().length() > 0) {
+				//添加拍照获取的图片
+				mUrlList.add(mFile.getAbsolutePath());
+				setList(mUrlList);
+				mPhotoList.add(new MediaPhoto(mFile.getAbsolutePath(), true));
+			} else {
+				Log.e(TAG, "setTakePhotoData: file为空了");
+			}
 		}
+		mSurplusCount = mMaxImageCount - mUrlList.size();
+		return;
 	}
 
 	@NonNull
 	private Intent getTakePhotoIntent() {//启动手机中的  camera app , 帮组去实现 拍照 , 那么需要发意图
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 		//写到 sd卡上 . 需要申请权限.
 		mFile = new File(Environment.getExternalStorageDirectory(), SystemClock.elapsedRealtime() + ".jpg");
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mFile));
+		Log.e(TAG, "getTakePhotoIntent: file = " + mFile);
+		Uri uri;
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+			uri = Uri.fromFile(mFile);
+		} else {
+			/**
+			 * 7.0 调用系统相机拍照不再允许使用Uri方式，应该替换为FileProvider
+			 * 并且这样可以解决MIUI系统上拍照返回size为0的情况
+			 */
+			Log.e(TAG, "provider: " + ProviderUtil.getFileProviderName(mContext) );
+			uri = FileProvider.getUriForFile(mContext, ProviderUtil.getFileProviderName(mContext), mFile);
+			//加入uri权限 要不三星手机不能拍照
+			List<ResolveInfo> resInfoList = mContext.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+			for (ResolveInfo resolveInfo : resInfoList) {
+				String packageName = resolveInfo.activityInfo.packageName;
+				mContext.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			}
+		}
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 		return intent;
 	}
 
@@ -159,7 +200,7 @@ public class PhotoEditAdapter extends RecyclerView.Adapter {
 				public void onClick(View v) {
 					if (getIsAdded() && mPosition == getItemCount() - 1) {
 						//能够添加
-						PhotoBottomDialog builder = new PhotoBottomDialog(mContext, mActivity, getTakePhotoIntent(),mSurplusCount);
+						PhotoBottomDialog builder = new PhotoBottomDialog(mContext, mActivity, getTakePhotoIntent(), mSurplusCount);
 						builder.getAlertDialog().show();
 					} else {
 						//预览
@@ -192,6 +233,7 @@ public class PhotoEditAdapter extends RecyclerView.Adapter {
 				mIvPhoto.setScaleType(ImageView.ScaleType.CENTER_CROP);
 				String url = mUrlList.get(position);
 				if (!TextUtils.isEmpty(url) && url != null) {
+					Log.e(TAG, "setData: url = " + url );
 					Glide.with(mContext).load(url).into(mIvPhoto);
 				}
 			}
