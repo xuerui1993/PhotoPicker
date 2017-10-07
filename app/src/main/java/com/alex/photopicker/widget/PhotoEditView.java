@@ -82,7 +82,7 @@ public class PhotoEditView extends LinearLayout {
 	public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) {
 		switch (requestCode) {
 			case REQUEST_CODE_CAMERA:
-				Log.e(TAG, "onRequestPermissionResult: " );
+				Log.e(TAG, "onResult: permissions" + permissions.length + ",grant[0] =  " + grantResults[0] + "[1] = " + grantResults[1] );
 				if (permissions.length == 1) {
 					if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 						mPhotoEditAdapter.takePhoto();
